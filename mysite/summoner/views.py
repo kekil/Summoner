@@ -1,7 +1,14 @@
 from summoner.models import Summoner
 from django.shortcuts import render, get_object_or_404
+import requests
+from bs4 import BeautifulSoup
 
 def home(request):
+    soup = BeautifulSoup(requests.get("http://www.lolking.net/summoner/na/19907776#history").text)
+    match = soup.find_all('div', {"class":"page_inner", "style":"position"}).find(id=1).find('div')
+    match = match.find_all('div', {"class":"match_details_cell"})
+    champion = match.find('a').get('href')
+    print champion
     return render(request, 'summoner/home.html')
 
 def index(request):
