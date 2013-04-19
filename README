@@ -1,0 +1,6 @@
+Run by calling python manage.py runserver
+to view the website go to localhost:port, where port should be 8000
+This project uses a database that holds Summoner objects that can be linked to many Match objects.
+Summoner holds the name of the summoner, where Match keeps track of the champion used in that game, and their associated kills/deaths/assists
+The main site isn't very robust, but has a link that will bring you to a list of summoners
+You can click on a summoner to display their most recent match statistics

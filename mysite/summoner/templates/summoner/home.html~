@@ -1,0 +1,11 @@
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <p> welcome to ben's database </p>
+    <p>
+	click <a href=/summoner/>here</a> to view a list of recent summoners, then click on a summoner to view their recent match history
+    </p>
+    <li><a href=/summoner/>here</a></li>
+
+{% endblock %}

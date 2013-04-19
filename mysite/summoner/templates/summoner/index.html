@@ -1,0 +1,14 @@
+{% block title %}List of Summoners{% endblock %}
+
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'summoner/style.css' %}"/>
+{% if latest_summoner_list %}
+    <ul>
+    {% for summoner in latest_summoner_list %}
+    <li><a href="{% url 'detail' summoner.id %}">{{summoner.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No summoners are available.</p>
+{% endif %}
+
