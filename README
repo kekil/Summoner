@@ -1,6 +1,16 @@
 Run by calling python manage.py runserver
+additional packages to be installed are BeautifulSoup 4 and requests, which can be installed using pip
+    pip-python install beautifulsoup4
+    pip-python install requests
+    note:will also need to have pip installed
+
 to view the website go to localhost:port, where port should be 8000
 This project uses a database that holds Summoner objects that can be linked to many Match objects.
 Summoner holds the name of the summoner, where Match keeps track of the champion used in that game, and their associated kills/deaths/assists
 The main site isn't very robust, but has a link that will bring you to a list of summoners
 You can click on a summoner to display their most recent match statistics
+
+dev branch
+currently working on making it so that there are no identical objects created by using django shortcut get_or_create.
+Also trying to use Beautiful Soup to generate match information for the given summoner (CeciI)
+
