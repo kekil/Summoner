@@ -12,4 +12,6 @@ urlpatterns = patterns('',
     url(r'^$', 'summoner.views.home', name='home'),
     url(r'^summoner/$', 'summoner.views.index', name='index'),
     url(r'^summoner/(?P<summoner_id>\d+)/$', 'summoner.views.detail', name='detail'),
+    url(r'^creation/', 'summoner.views.create', name='create'),
+    url(r'^thanks/', 'summoner.views.thanks', name='thanks'),
 )

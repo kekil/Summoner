@@ -1,0 +1,5 @@
+April 20, 2013 6pm
+added functionality for users to input a given summoner name and its match information to create data for the database
+form ensures that no duplicate summoner objects are created
+added a simple thank you page for succesfully using the form, returning the user to the home page, or sending it back to the form
+
