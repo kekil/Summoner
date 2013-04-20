@@ -14,3 +14,4 @@ dev branch
 currently working on making it so that there are no identical objects created by using django shortcut get_or_create.
 Also trying to use Beautiful Soup to generate match information for the given summoner (CeciI)
 
+Summoner object is based upon the game League of Legends
