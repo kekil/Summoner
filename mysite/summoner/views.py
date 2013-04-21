@@ -6,13 +6,6 @@ from bs4 import BeautifulSoup
 from django.http import HttpResponseRedirect
 
 def home(request):
-    """
-    soup = BeautifulSoup(requests.get("http://www.lolking.net/summoner/na/19907776#history").text)
-    match = soup.find_all('div', {"class":"page_inner", "style":"position"}).find(id=1).find('div')
-    match = match.find_all('div', {"class":"match_details_cell"})
-    champion = match.find('a').get('href')
-    print champion
-    """
     return render(request, 'summoner/home.html')
 
 def index(request):
@@ -26,6 +19,27 @@ def detail(request, summoner_id):
 
 def thanks(request):
     return render(request, 'summoner/thanks.html')
+
+def getNumbers(s):
+    return str(s.get_text()).split()[0]
+
+def soup(request):
+    r = requests.get("http://www.elophant.com/league-of-legends/summoner/na/19907776/recent-games")
+    soup = BeautifulSoup(r.text)
+    #grabs the most recent match information
+    champion = soup.find('div', class_='title')
+    kills = soup.find('div', class_='kills').find('span')
+    deaths = soup.find('div', class_='deaths').find('span')
+    assists = soup.find('div', class_='assists').find('span')
+    #in format of <span> x Kills</span>, need to find x
+    #change it to form of string from html, then split it to find x
+    c = str(champion.get_text())
+    k = getNumbers(kills)
+    d = getNumbers(deaths)
+    a = getNumbers(assists)
+    s, created = Summoner.objects.get_or_create(name = 'CeciI')
+    match = Match.objects.get_or_create(summoner = s, kills = k, deaths = d, assists = a, champion = c)
+    return HttpResponseRedirect('/thanks/')
 
 def create(request):
     if request.method == 'POST':
