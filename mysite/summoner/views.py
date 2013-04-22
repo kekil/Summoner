@@ -27,18 +27,34 @@ def soup(request):
     r = requests.get("http://www.elophant.com/league-of-legends/summoner/na/19907776/recent-games")
     soup = BeautifulSoup(r.text)
     #grabs the most recent match information
-    champion = soup.find('div', class_='title')
-    kills = soup.find('div', class_='kills').find('span')
-    deaths = soup.find('div', class_='deaths').find('span')
-    assists = soup.find('div', class_='assists').find('span')
+    champion = soup.find_all('div', class_='title')
+    kills = soup.find_all('div', class_='kills')
+    deaths = soup.find_all('div', class_='deaths')
+    assists = soup.find_all('div', class_='assists')
+    for x in range(0, len(kills)-1):
+        kills[x] = kills[x].find('span')
+        deaths[x] = deaths[x].find('span')
+        assists[x] = assists[x].find('span')
+    for a, b, c in zip(kills, deaths, assists):
+        if a == None: 
+            kills.remove(a)
+        if b == None:
+            deaths.remove(b)
+        if c == None:
+            assists.remove(c)
+    kills.remove(kills[len(kills)-1])
+    deaths.remove(deaths[len(deaths)-1])
+    assists.remove(assists[len(assists)-1])
+    print kills, deaths, assists
     #in format of <span> x Kills</span>, need to find x
     #change it to form of string from html, then split it to find x
-    c = str(champion.get_text())
-    k = getNumbers(kills)
-    d = getNumbers(deaths)
-    a = getNumbers(assists)
-    s, created = Summoner.objects.get_or_create(name = 'CeciI')
-    match = Match.objects.get_or_create(summoner = s, kills = k, deaths = d, assists = a, champion = c)
+    for c, k, d, a in zip(champion, kills, deaths, assists):
+        c = str(c.get_text())
+        k = getNumbers(k)
+        d = getNumbers(d)
+        a = getNumbers(a)
+        s, created = Summoner.objects.get_or_create(name = 'CeciI')
+        match = Match.objects.get_or_create(summoner = s, kills = k, deaths = d, assists = a, champion = c)
     return HttpResponseRedirect('/thanks/')
 
 def create(request):

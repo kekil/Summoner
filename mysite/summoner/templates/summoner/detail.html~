@@ -1,0 +1,26 @@
+<h1>{{summoner.name}}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p> List of matches, and their recorded stats for {{summoner.name}} </p>
+<p> {{match.kill}} </p>
+<ul>
+<table border ="1">
+    <tr>
+        <th>Champion</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Assists</th>
+    </tr>
+    {% if latest_match_list %}
+    {% for match in latest_match_list %}
+        <tr>
+            <td>{{match.champion}}</td>
+            <td>{{match.kills}}</td>
+            <td>{{match.deaths}}</td>
+            <td>{{match.assists}}</td>
+        </tr>
+    {% endfor %}
+    {% else %}
+	<p> No Matches Available </p>
+</table>
+</ul>
