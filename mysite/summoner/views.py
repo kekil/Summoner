@@ -21,41 +21,57 @@ def thanks(request):
     return render(request, 'summoner/thanks.html')
 
 def getNumbers(s):
+    #in form <span> x kills </span>, grabs the x
     return str(s.get_text()).split()[0]
 
 def soup(request):
-    r = requests.get("http://www.elophant.com/league-of-legends/summoner/na/19907776/recent-games")
-    soup = BeautifulSoup(r.text)
+    profilepage = "http://www.elophant.com/league-of-legends/summoner/na/19907776/recent-games"
+    getSummonerMatchHistory(profilepage, 'CeciI')
+    return HttpResponseRedirect('/thanks/')
+
+def superSoup(request):
+    if request.method == 'POST':
+        form = SoupForm(request.POST)
+        if form.is_valid():
+            searchString = "http://www.elophant.com/league-of-legends/search?query="
+            newSummoner = form.cleaned_data['summoner']
+            newSearch = searchString + newSummoner
+            soup = BeautifulSoup(requests.get(newSearch).text)
+            sprofile = soup.find('div', class_='alter search-results').find('a').get('href')
+            profilepage = "http://www.elophant.com" + str(sprofile) + "/recent-games"
+            getSummonerMatchHistory(profilepage, newSummoner)
+
+            return HttpResponseRedirect('/thanks/')
+    else:
+        form = SoupForm()
+    return render(request, 'summoner/superSoup.html', {'form':form,})
+            
+def getSummonerMatchHistory(profilepage, summonerName):
+    soup = BeautifulSoup(requests.get(profilepage).text)
     #grabs the most recent match information
     champion = soup.find_all('div', class_='title')
     kills = soup.find_all('div', class_='kills')
     deaths = soup.find_all('div', class_='deaths')
     assists = soup.find_all('div', class_='assists')
-    for x in range(0, len(kills)-1):
-        kills[x] = kills[x].find('span')
-        deaths[x] = deaths[x].find('span')
-        assists[x] = assists[x].find('span')
-    for a, b, c in zip(kills, deaths, assists):
-        if a == None: 
-            kills.remove(a)
-        if b == None:
-            deaths.remove(b)
-        if c == None:
-            assists.remove(c)
-    kills.remove(kills[len(kills)-1])
-    deaths.remove(deaths[len(deaths)-1])
-    assists.remove(assists[len(assists)-1])
-    print kills, deaths, assists
-    #in format of <span> x Kills</span>, need to find x
-    #change it to form of string from html, then split it to find x
+
+    #narrows each respective info down to the span information
+    kills = [x.find('span') for x in kills]
+    kills = [x for x in kills if x != None]
+    deaths = [x.find('span') for x in deaths]
+    deaths = [x for x in deaths if x != None]
+    assists = [x.find('span') for x in assists]
+    assists = [x for x in assists if x != None]
+
     for c, k, d, a in zip(champion, kills, deaths, assists):
         c = str(c.get_text())
         k = getNumbers(k)
         d = getNumbers(d)
         a = getNumbers(a)
-        s, created = Summoner.objects.get_or_create(name = 'CeciI')
+        s, created = Summoner.objects.get_or_create(name = summonerName)
         match = Match.objects.get_or_create(summoner = s, kills = k, deaths = d, assists = a, champion = c)
-    return HttpResponseRedirect('/thanks/')
+
+class SoupForm(forms.Form):
+    summoner = forms.CharField(max_length=30)
 
 def create(request):
     if request.method == 'POST':

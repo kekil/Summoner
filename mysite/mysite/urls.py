@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^creation/', 'summoner.views.create', name='create'),
     url(r'^thanks/', 'summoner.views.thanks', name='thanks'),
     url(r'^soup/', 'summoner.views.soup', name='soup'),
+    url(r'^superSoup/', 'summoner.views.superSoup', name='superSoup'),
 )
