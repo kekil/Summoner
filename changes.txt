@@ -1,8 +1,13 @@
 To Do:
-    given the particular summoner, gather match data for all other summoners inthe first most recent match only
     restructure database so that matches hold when the match took place, in order to order summoner index and match index by most recent matches.
+
+April 23, 2013
+    given the particular summoner, gather match data for all other summoners inthe first most recent match only
+    works by using radio button in super soup, yes = gather all summoner data and no only gathers matchhistory for specified user 
+
 April 22, 2013
     added page that allows users to search for a particular summoner, and then gather all of their most recent match history.
+
 April 22, 2013
     Beautiful Soup now gathers all of the given summoners most recent match history (last 10)
 

@@ -1,6 +1,8 @@
 from summoner.models import Summoner, Match
 from django.shortcuts import render, get_object_or_404
 from django import forms
+from django.forms.widgets import RadioSelect
+from django.forms.fields import ChoiceField
 import requests
 from bs4 import BeautifulSoup
 from django.http import HttpResponseRedirect
@@ -35,11 +37,42 @@ def superSoup(request):
         if form.is_valid():
             searchString = "http://www.elophant.com/league-of-legends/search?query="
             newSummoner = form.cleaned_data['summoner']
+            if form.cleaned_data['All_Summoners']=='1':
+                flag = True
+            else:
+                flag = False
             newSearch = searchString + newSummoner
             soup = BeautifulSoup(requests.get(newSearch).text)
             sprofile = soup.find('div', class_='alter search-results').find('a').get('href')
             profilepage = "http://www.elophant.com" + str(sprofile) + "/recent-games"
             getSummonerMatchHistory(profilepage, newSummoner)
+            if (flag):
+                soup = BeautifulSoup(requests.get(profilepage).text)
+                #gets list of summoners information in the most recent game
+                blue = soup.find('div', class_='team blue')
+                print blue
+                blue = blue.find_all('a')
+                red = soup.find('div', class_='team red').find_all('a')
+                
+                blueSummonerUrls = [x.get('href') for x in blue]
+                blueSummonerUrls = [x for x in blueSummonerUrls if 'summoner' in x]
+                redSummonerUrls = [x.get('href') for x in red]
+                redSummonerUrls = [x for x in redSummonerUrls if 'summoner' in x]
+
+                blueSummonerNames = [x.get_text() for x in blue] 
+                blueSummonerNames = [x for x in blueSummonerNames if x != '']
+                redSummonerNames = [x.get_text() for x in red]
+                redSummonerNames = [x for x in redSummonerNames if x != '']
+                redTeam = zip(redSummonerUrls, redSummonerNames)
+                blueTeam = zip(blueSummonerUrls, blueSummonerNames)
+
+                for a, b in blueTeam:
+                    summonerProfile = str("http://www.elophant.com"+a+"/recent-games")
+                    getSummonerMatchHistory(summonerProfile, b)
+                if len(redTeam)>0:
+                    for a,b in redTeam:
+                        summonerProfile = "http://www.elophant.com"+a+"/recent-games"
+                        getSummonerMatchHistory(summonerProfile, b)
 
             return HttpResponseRedirect('/thanks/')
     else:
@@ -72,6 +105,9 @@ def getSummonerMatchHistory(profilepage, summonerName):
 
 class SoupForm(forms.Form):
     summoner = forms.CharField(max_length=30)
+    yesNo = ( (1, 'Yes'),
+        (0, 'No'), )
+    All_Summoners = forms.ChoiceField(widget=forms.RadioSelect, choices=yesNo)
 
 def create(request):
     if request.method == 'POST':
