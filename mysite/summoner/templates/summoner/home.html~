@@ -1,11 +1,18 @@
-
-{% block title %}Home{% endblock %}
+<!DOCTYPE html>
+{% extends "summoner/base.html" %}    
 
 {% block content %}
     <p> welcome to ben's database </p>
     <p>
 	click <a href=/summoner/>here</a> to view a list of recent summoners, then click on a summoner to view their recent match history
     </p>
-    <li><a href=/summoner/>here</a></li>
+    <p>
+    click <a href=/creation/>here</a> to create match information for a certian summoner
+    </p>
 
 {% endblock %}
+
+<p> click <a href=/soup/>here</a> to create a match for summoner CeciI using BeautifulSoup </p>
+
+<p> click <a href=/superSoup>here</a> to create a match history for any summoner, and the summoners of only the most recent match
+

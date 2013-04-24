@@ -1,7 +1,5 @@
 {% extends "summoner/base.html" %}  
-{% block content %}
 <form action="/creation/" method="post"}>{% csrf_token %}
 {{ form.as_p }}
 <input type = "submit" value = "Submit"/>
 </form>
-{% endblock %}

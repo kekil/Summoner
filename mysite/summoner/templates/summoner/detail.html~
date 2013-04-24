@@ -11,8 +11,7 @@
         <th>Deaths</th>
         <th>Assists</th>
     </tr>
-    {% if latest_match_list %}
-    {% for match in latest_match_list %}
+    {% for match in summoner.match_set.all %}
         <tr>
             <td>{{match.champion}}</td>
             <td>{{match.kills}}</td>
@@ -20,7 +19,5 @@
             <td>{{match.assists}}</td>
         </tr>
     {% endfor %}
-    {% else %}
-	<p> No Matches Available </p>
 </table>
 </ul>

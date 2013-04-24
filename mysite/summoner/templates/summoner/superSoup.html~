@@ -1,5 +1,4 @@
 {% extends "summoner/base.html" %}  
-{% block content %}
 <p> Example CeciI or AccelGG </p>
 <form action="/superSoup/" method="post"}>{% csrf_token %}
 {{ form.as_p }}
@@ -7,4 +6,4 @@
 <p> Click on yes if you want to generate a complete match history for every summoner in most recent match of the above summoner </p>
 <p> Clcik no to ensure that only match history will be generated for the specified summoner </p>
 </form>
-{% endblock %}
+

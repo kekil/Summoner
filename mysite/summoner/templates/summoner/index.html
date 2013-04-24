@@ -1,7 +1,6 @@
+{% extends 'summoner/base.html' %}
 {% block title %}List of Summoners{% endblock %}
-
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'summoner/style.css' %}"/>
+{% block content %}
 {% if latest_summoner_list %}
     <ul>
     {% for summoner in latest_summoner_list %}
@@ -11,4 +10,4 @@
 {% else %}
     <p>No summoners are available.</p>
 {% endif %}
-
+{% endblock %}
