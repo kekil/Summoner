@@ -40,11 +40,15 @@
             <span class="icon-bar"></span>
           </button>
           <a class="brand" href="/">Summoner Home</a>
-          <div class="nav-collapse collapse">
+        
             <ul class="nav">
-              <li class="active"><a href="/summoner">Summoner Index</a></li>
+              <li class="active"><a href="/summoner">Index</a></li>
+              <li><a href="/about">About</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+            <form class="navbar-form pull-right" action="/search_index" method="get">
+                <input class="span2" name='s' type="text" placeholder="Summoner Name">
+                <button type="submit" class="btn">Search</button>
+            </form>
         </div>
       </div>
     </div>

@@ -40,10 +40,8 @@
             <span class="icon-bar"></span>
           </button>
           <a class="brand" href="/">Summoner Home</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="/summoner">Summoner Index</a></li>
-            </ul>
+              <li class="active"><a href="/summoner">Index</a></li>
+              <li><a href="/about">About</a></li>            
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -51,10 +49,6 @@
 
     <div class="container">
 	{% block content %} {% endblock %}
-<!--
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
--->
     </div> <!-- /container -->
 
     <!-- Le javascript

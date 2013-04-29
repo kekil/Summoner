@@ -16,4 +16,6 @@ urlpatterns = patterns('',
     url(r'^thanks/', 'summoner.views.thanks', name='thanks'),
     url(r'^soup/', 'summoner.views.soup', name='soup'),
     url(r'^superSoup/', 'summoner.views.superSoup', name='superSoup'),
+    url(r'^about/', 'summoner.views.about', name = 'about'),
+    url(r'^search_index/', 'summoner.views.search_index', name ='search_index'),
 )

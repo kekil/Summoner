@@ -1,6 +1,6 @@
 {% extends "summoner/base.html" %}  
+{% block content %}
 <h1>{{summoner.name}}</h1>
-
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 <p> List of matches, and their recorded stats for {{summoner.name}} </p>
 <p> {{match.kill}} </p>
@@ -22,3 +22,4 @@
     {% endfor %}
 </table>
 </ul>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'summoner/base.html' %}
-{% block title %}List of Summoners{% endblock %}
 {% block content %}
 {% if latest_summoner_list %}
+{% block title %}<h3>List of Summoners</h3>{% endblock %}
     <ul>
     {% for summoner in latest_summoner_list %}
     <li><a href="{% url 'detail' summoner.id %}">{{summoner.name}}</a></li>

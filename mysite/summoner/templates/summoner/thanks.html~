@@ -1,4 +1,4 @@
-{% extends "summoner/base.html" %}
+(% extends "summoner/base.html" %}
 {% block content %}
 <p> Thanks for adding new data to the database <p>
 <p> To return to the home page, click on Summoner Home above </p>

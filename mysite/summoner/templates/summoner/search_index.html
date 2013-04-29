@@ -1,0 +1,12 @@
+{% extends "summoner/base.html" %}
+
+{% block content %}
+<p> Search results returned summoner <strong>{{search}}</strong></p>
+{% if summoner %}
+<ul>
+    <li><a href="{% url 'detail' summoner.id %}">{{summoner.name}}</a></li>
+</ul>
+{% else %}
+    <p>No summoners are matched your query.</p>
+{% endif %}
+{% endblock %}

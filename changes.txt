@@ -1,8 +1,13 @@
 To Do:
     restructure database so that matches hold when the match took place, in order to order summoner index and match index by most recent matches.
 
+April 29, 2013
+    updated css style to include all pages, added search function for all pages to look search for a particular summoner in the database
+    search function is slightly broken
+
 April 24, 2013
     change css style to twitters bootstrap, only basic template for now, more styling changes to come.
+
 April 23, 2013
     given the particular summoner, gather match data for all other summoners inthe first most recent match only
     works by using radio button in super soup, yes = gather all summoner data and no only gathers matchhistory for specified user 

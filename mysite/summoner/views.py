@@ -5,7 +5,7 @@ from django.forms.widgets import RadioSelect
 from django.forms.fields import ChoiceField
 import requests
 from bs4 import BeautifulSoup
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 def home(request):
     return render(request, 'summoner/home.html')
@@ -14,10 +14,22 @@ def index(request):
     latest_summoner_list = Summoner.objects.all().order_by('-name')[:10]
     context = { 'latest_summoner_list': latest_summoner_list}
     return render(request, 'summoner/index.html', context)
+def search_index(request):
+    if 's' in request.GET:
+        summonerName = request.GET['s'] 
+        summoner = Summoner.objects.filter(name=summonerName)
+        context = {'summoner':summoner, 'search':summonerName}
+    #return HttpResponseRedirect('/search_index/', context)
+        return render(request, 'summoner/search_index.html', context)
+    else:
+        return render(request, 'home.html', {'error':True})
 
 def detail(request, summoner_id):
     summoner = get_object_or_404(Summoner, pk=summoner_id)
     return render(request, 'summoner/detail.html', {'summoner':summoner})
+
+def about(request):
+    return render(request, 'summoner/about.html')
 
 def thanks(request):
     return render(request, 'summoner/thanks.html')
@@ -37,10 +49,10 @@ def superSoup(request):
         if form.is_valid():
             searchString = "http://www.elophant.com/league-of-legends/search?query="
             newSummoner = form.cleaned_data['summoner']
+            #flag corresponds to Yes No Radio Buttons
+            flag = False
             if form.cleaned_data['All_Summoners']=='1':
                 flag = True
-            else:
-                flag = False
             newSearch = searchString + newSummoner
             soup = BeautifulSoup(requests.get(newSearch).text)
             sprofile = soup.find('div', class_='alter search-results').find('a').get('href')
@@ -49,26 +61,16 @@ def superSoup(request):
             if (flag):
                 soup = BeautifulSoup(requests.get(profilepage).text)
                 #gets list of summoners information in the most recent game
-                blue = soup.find('div', class_='team blue')
-                print blue
-                blue = blue.find_all('a')
+                blue = soup.find('div', class_='team blue').find_all('a')
                 red = soup.find('div', class_='team red').find_all('a')
                 
-                blueSummonerUrls = [x.get('href') for x in blue]
-                blueSummonerUrls = [x for x in blueSummonerUrls if 'summoner' in x]
-                redSummonerUrls = [x.get('href') for x in red]
-                redSummonerUrls = [x for x in redSummonerUrls if 'summoner' in x]
-
-                blueSummonerNames = [x.get_text() for x in blue] 
-                blueSummonerNames = [x for x in blueSummonerNames if x != '']
-                redSummonerNames = [x.get_text() for x in red]
-                redSummonerNames = [x for x in redSummonerNames if x != '']
-                redTeam = zip(redSummonerUrls, redSummonerNames)
-                blueTeam = zip(blueSummonerUrls, blueSummonerNames)
+                blueTeam = getTeamInfo(blue)
+                redTeam = getTeamInfo(red)
 
                 for a, b in blueTeam:
                     summonerProfile = str("http://www.elophant.com"+a+"/recent-games")
                     getSummonerMatchHistory(summonerProfile, b)
+                #handles if the game is a coop vs ai (bot games)
                 if len(redTeam)>0:
                     for a,b in redTeam:
                         summonerProfile = "http://www.elophant.com"+a+"/recent-games"
@@ -79,6 +81,13 @@ def superSoup(request):
         form = SoupForm()
     return render(request, 'summoner/superSoup.html', {'form':form,})
             
+def getTeamInfo(team):
+    teamSummonerUrls = [x.get('href') for x in team]
+    teamSummonerUrls = [x for x in teamSummonerUrls if 'summoner' in x] 
+    teamSummonerNames = [x.get_text() for x in team]
+    teamSummonerNames = [x for x in teamSummonerNames if x != '']
+    return zip(teamSummonerUrls, teamSummonerNames)
+
 def getSummonerMatchHistory(profilepage, summonerName):
     soup = BeautifulSoup(requests.get(profilepage).text)
     #grabs the most recent match information
