@@ -1,6 +1,9 @@
 To Do:
     restructure database so that matches hold when the match took place, in order to order summoner index and match index by most recent matches.
 
+April 30, 2013
+    fixed search function
+
 April 29, 2013
     updated css style to include all pages, added search function for all pages to look search for a particular summoner in the database
     search function is slightly broken

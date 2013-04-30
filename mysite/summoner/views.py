@@ -17,12 +17,13 @@ def index(request):
 def search_index(request):
     if 's' in request.GET:
         summonerName = request.GET['s'] 
-        summoner = Summoner.objects.filter(name=summonerName)
-        context = {'summoner':summoner, 'search':summonerName}
-    #return HttpResponseRedirect('/search_index/', context)
+        try:
+            summoner = Summoner.objects.get(name=summonerName)
+            context = {'summoner':summoner}
+        except:
+            context = {}
         return render(request, 'summoner/search_index.html', context)
-    else:
-        return render(request, 'home.html', {'error':True})
+    return HttpResponseRedirect("/")
 
 def detail(request, summoner_id):
     summoner = get_object_or_404(Summoner, pk=summoner_id)
